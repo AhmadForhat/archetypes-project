@@ -1,51 +1,38 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-
-import { 
-  Container,
-  MenuIcon,
-  ImageContainer,
-  MenuContainer,
-  LateralMenu,
-  ExitContainer,
-  ExitIcon,
-  List
-} from './styles'
-
-const arrayMenu = [
-  {
-    title: 'Home',
-    to: '/'
-  }
-]
+import { Drawer, Button } from 'antd';
+import {
+  CloseOutlined,
+  MenuOutlined
+} from '@ant-design/icons';
 
 const Menu = () => {
   const [openMenu, setOpenMenu] = useState(false)
+  const handleToggle = () => setOpenMenu({
+    visible: !openMenu.visible,
+  })
   return (
     <>
-      <Container>
-        <ImageContainer />
-        <MenuContainer onClick={() => setOpenMenu(!openMenu)}>
-          <MenuIcon />
-        </MenuContainer>
-      </Container>
-      <LateralMenu openMenu={openMenu}>
-        <ExitContainer onClick={() => setOpenMenu(!openMenu)}>
-          <ExitIcon />
-        </ExitContainer>
-          <ul>
-            {arrayMenu.map(item => (
-              <List>
-                <Link 
-                  to={item.to}
-                  onClick={() => setOpenMenu(!openMenu)}
-                >
-                  {item.title}
-                </Link>
-              </List>
-            ))}
-          </ul>
-      </LateralMenu>
+    <div style={{ marginTop: 16, display: 'flex', justifyContent:'flex-end' }}>
+        <Button onClick={handleToggle} icon={<MenuOutlined />} style={{marginRight: '20px'}} />
+        </div>
+        <Drawer
+          title={
+            <div style={{display: 'flex', justifyContent:'space-between'}}>
+              <h2>Menu</h2>
+              <Button onClick={handleToggle} icon={<CloseOutlined />} />
+            </div>
+          }
+          placement="right"
+          closable={false}
+          onClose={handleToggle}
+          visible={openMenu.visible}
+          width='100%'
+        >
+          <Link href='/'>
+            Home
+          </Link>
+        </Drawer>
     </>
   )
 }
